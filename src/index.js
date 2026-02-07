@@ -1,9 +1,16 @@
 import express from "express";
 import { matchRoutes } from "./routes/matchroutes.js";
+import http from 'http' ; 
+import { attachWebSocketServer } from "./ws/server.js";
 
 const app = express() ; 
 
-const port = 8000 ; 
+const PORT = Number(process.env.PORT || 8000)
+
+const HOST = process.env.HOST || '0.0.0.0'
+
+
+const server = http.createServer(app) ; 
 
 app.use(express.json()) ; 
 
@@ -12,8 +19,21 @@ app.get('/' , (req , res)=>{
 })
 
 app.use('/matches' , matchRoutes) ; 
+
+const {broadCastMatchCreated} = attachWebSocketServer(server)
+
+app.locals.broadCastMatchCreated = broadCastMatchCreated
  
-app.listen(port , ()=>{
-    console.log(`Server is running at http://localhost:${port}`);
+server.listen(PORT ,HOST ,  ()=>{
+
+  const baseURL =
+    HOST === "0.0.0.0" ? `http://localhost:${PORT}` : `http://${HOST}:${PORT}`;
+
+
+  console.log(`Server is running at ${baseURL}`);
+
+  console.log(
+    `WebSocket server is running on ${baseURL.replace("http", "ws")}/ws`,
+  );
     
 })
