@@ -26,14 +26,14 @@ app.locals.broadCastMatchCreated = broadCastMatchCreated
  
 server.listen(PORT ,HOST ,  ()=>{
 
-    const baseURL  = HOST === '0.0.0.0' ? `http://localhost${PORT}`: `http://${HOST}:${PORT}`
+  const baseURL =
+    HOST === "0.0.0.0" ? `http://localhost:${PORT}` : `http://${HOST}:${PORT}`;
 
 
-    console.log(`Server is running at http://localhost:${baseURL}`);
+  console.log(`Server is running at ${baseURL}`);
 
-    console.log(`WEbSocket server is  runnning on ${baseURL.replace('http' , 'ws')}/ws`);
-    
-
-
+  console.log(
+    `WebSocket server is running on ${baseURL.replace("http", "ws")}/ws`,
+  );
     
 })
