@@ -60,7 +60,11 @@ matchRoutes.route('/').post(async (req , res)=>{
                 parsed.data.endTime,
               ),
             })
-            .returning();  
+            .returning(); 
+            
+            if(res.app.locals.broadCastMatchCreated){
+              res.app.locals.broadCastMatchCreated(event) ; 
+            }
           res.status(201).json({data : event})
         } catch (error) {
             return res.status(500).json({
