@@ -37,7 +37,9 @@ function broadcast(wss , payload){
                     const code  = decision.reason.isRateLimit() ? 1013 : 1008 ; 
                     const reason = decision.reason.isRateLimit() ? 'Rate limit exceeded' : 'Access Denied' ; 
                     socket.close(code ,reason)
+                    return ;
                 }
+
             } catch (error) {
                 console.error('WS connection error' ,error) ; 
                 socket.close(1011, 'Ws error') ; 
