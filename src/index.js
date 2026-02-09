@@ -3,6 +3,7 @@ import { matchRoutes } from "./routes/matchroutes.js";
 import http from 'http' ; 
 import { attachWebSocketServer } from "./ws/server.js";
 import { securityMiddleware } from "./arcjet.js";
+import { commentaryRouter } from "./routes/commentaryRoutes.js";
 
 const app = express() ; 
 
@@ -23,9 +24,13 @@ app.use(securityMiddleware())
 
 app.use('/matches' , matchRoutes) ; 
 
-const {broadCastMatchCreated} = attachWebSocketServer(server)
+app.use('/matches/:id/commentary' ,commentaryRouter)
+
+const {broadCastMatchCreated , broadcastCommentary} = attachWebSocketServer(server)
 
 app.locals.broadCastMatchCreated = broadCastMatchCreated
+
+app.locals.broadcastCommentary = broadcastCommentary
  
 server.listen(PORT ,HOST ,  ()=>{
 
