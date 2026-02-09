@@ -15,7 +15,7 @@ function unsubscribe(matchId , socket){
     const subscribers = matchSubscribers.get(matchId) ; 
     if(!subscribers) return   ; 
     subscribers.delete(socket) ; 
-    if(subscribers.size() === 0){
+    if(subscribers.size === 0){
         matchSubscribers.delete(matchId) ; 
     }
 }
@@ -48,13 +48,13 @@ function handleMessage(socket , data){
     if(message?.type === "subscribe" && Number.isInteger(message.matchId)){
         subscribe(message.matchId, socket); 
         socket.subscriptions.add(message.matchId) ; 
-        sendJson(socket, { type: "subcribed", matchId: message.matchId }); 
+        sendJson(socket, { type: "subscribed", matchId: message.matchId }); 
     }
 
     if(message?.type === "unsubscribe" && Number.isInteger(message.matchId)){
         unsubscribe(message.matchId ,  socket) ; 
         socket.subscriptions.delete(message.matchId) ; 
-        sendJson(socket , {type : 'unsubcribed' , matchId : message.matchId}) ; 
+        sendJson(socket , {type : 'unsubscribed' , matchId : message.matchId}) ; 
     }
 }
 
