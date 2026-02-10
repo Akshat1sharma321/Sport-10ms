@@ -9,7 +9,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "seed":"node src/seed/seed.js"
+    "db:reset": "node src/seed/reset.js",
+    "seed": "node src/seed/seed.js"
   },
   "type": "module",
   "keywords": [],
@@ -18,6 +19,7 @@
   "dependencies": {
     "@arcjet/inspect": "^1.1.0",
     "@arcjet/node": "^1.1.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
