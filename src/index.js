@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { matchRoutes } from "./routes/matchroutes.js";
 import http from 'http' ; 
 import { attachWebSocketServer } from "./ws/server.js";
@@ -15,12 +16,13 @@ const HOST = process.env.HOST || '0.0.0.0'
 const server = http.createServer(app) ; 
 
 app.use(express.json()) ; 
+app.use(cors()); 
 
 app.get('/' , (req , res)=>{
     res.send("Hello from the server") ; 
 })
 
-app.use(securityMiddleware())
+// app.use(securityMiddleware())
 
 app.use('/matches' , matchRoutes) ; 
 
