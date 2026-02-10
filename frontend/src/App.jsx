@@ -3,6 +3,7 @@ import { fetchMatches, fetchMatchDetails } from './api'
 import { useWebSocket } from './hooks/useWebSocket'
 import { MatchCard } from './components/MatchCard'
 import { CommentaryFeed } from './components/CommentaryFeed'
+import FooterI from './components/footer'
 
 function App() {
   const [matches, setMatches] = useState([]);
@@ -24,17 +25,16 @@ function App() {
         // Based on typical Express response `res.json(matches)` or `res.json({data: matches})`
         // I need to check `matchRoutes.js`. Assuming array for now, will debug if needed.
         // Actually `matchRoutes.js` usually returns `res.json(matches)`.
-        const matchesList = Array.isArray(data) ? data : (data.data || []);
+        const matchesList = Array.isArray(data) ? data : data.data || [];
         setMatches(matchesList);
         setLoading(false);
 
         // Auto-select first live match if none selected
         if (!selectedMatchId && matchesList.length > 0) {
-            const liveMatch = matchesList.find(m => m.status === 'live');
-            if (liveMatch) setSelectedMatchId(liveMatch.id);
-            else setSelectedMatchId(matchesList[0].id);
+          const liveMatch = matchesList.find((m) => m.status === "live");
+          if (liveMatch) setSelectedMatchId(liveMatch.id);
+          else setSelectedMatchId(matchesList[0].id);
         }
-
       } catch (err) {
         console.error("Failed to fetch matches", err);
         setLoading(false);
@@ -44,7 +44,10 @@ function App() {
     loadMatches();
     const interval = setInterval(loadMatches, POLL_INTERVAL);
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedMatchId, POLL_INTERVAL]);
+
+//   -  }, []);
+// +  }, [selectedMatchId, POLL_INTERVAL]);
 
   // Handle Match Selection & Subscription
   useEffect(() => {
@@ -97,7 +100,7 @@ function App() {
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
       <header className="bg-yellow-400 border-b-4 border-black p-4 flex justify-between items-center sticky top-0 z-10 shadow-md">
         <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-black italic tracking-tighter">SPOTRZ</h1>
+            <h1 className="text-3xl font-black italic tracking-tighter">Sport-10ms</h1>
             <span className="text-xs font-bold uppercase tracking-widest mt-2">Real-time match data demo</span>
         </div>
         <div className={`flex items-center gap-2 bg-white px-3 py-1 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${isConnected ? 'opacity-100' : 'opacity-50'}`}>
@@ -149,6 +152,11 @@ function App() {
             <CommentaryFeed commentaries={commentary} />
         </section>
       </main>
+<footer>
+     <FooterI/>
+</footer>
+   
+     
     </div>
   )
 }
